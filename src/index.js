@@ -1,5 +1,5 @@
 import { fetchPictures } from "./js/fetchPictures";
-import { Notify } from "notiflix";
+import Notiflix from 'notiflix';
 
 
 const form = document.querySelector('#search-form')
