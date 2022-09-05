@@ -1,42 +1,72 @@
 import { fetchPictures } from "./js/fetchPictures";
 import Notiflix from 'notiflix';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 const form = document.querySelector('#search-form')
-console.log(form)
 const input = document.querySelector('[name="searchQuery"]')
-console.log(input)
 const searchBtn = document.querySelector('[type="submit"]')
-console.log(searchBtn)
 const gallery = document.querySelector('.gallery')
+const loadMoreBtn = document.querySelector('.load-more')
+let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 
 let page = 1
 
 searchBtn.addEventListener('click', onSearch)
+loadMoreBtn.addEventListener('click', onLoadMore)
+
+loadMoreBtn.style.display = 'none'
 
 function onSearch(evt) {
     evt.preventDefault();
     clear()
     const inputSearch = input.value;
 
-    if (inputSearch !== '') {
-        fetchPictures(inputSearch, page)
-            .then(data => {
-                    if (data.hits.length === 0) {
-        Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        }
-        else {
-        createImages(data.hits)
-        Notiflix.Notify.success(
-          `Hooray! We found ${data.totalHits} images.`
-        );
-        }
-        })
-
+    if (!inputSearch) {
+        clear()
+        return
     }
+
+        fetchPictures(inputSearch, page)
+        .then(data => {
+                if (data.hits.length === 0) {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+                    );
+                    loadMoreBtn.style.display = 'none'
+    }
+    else {
+    createImages(data.hits)
+    Notiflix.Notify.success(
+      `Hooray! We found ${data.totalHits} images.`
+    )
+            loadMoreBtn.style.display = 'block'
+            gallerySimpleLightbox.refresh()
+            }
+    })
 }
+
+
+function onLoadMore() {
+    page += 1;
+    const inputSearch = input.value;
+        fetchPictures(inputSearch, page)
+        .then(data => {
+                if (data.hits.length === 0) {
+    Notiflix.Notify.failure(
+      'We`re sorry, but you`ve reached the end of search results.'
+    );
+    }
+    else {
+    createImages(data.hits)
+    Notiflix.Notify.success(
+      `Hooray! We found ${data.totalHits} images.`
+                    );
+    loadMoreBtn.style.display = 'block'
+    }
+        })  
+} 
 
 
 function createImages(images) {
@@ -44,8 +74,8 @@ function createImages(images) {
         .map(image => {
         return `
 <div class="photo-card">
-
-  <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+<a href="${image.largeImageURL}" class="item__link">
+  <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" /></a>
   <div class="info">
     <p class="info-item">
       <b>Likes: ${image.likes}</b>
@@ -63,7 +93,7 @@ function createImages(images) {
 </div>
 `
         }).join('')
-    gallery.innerHTML = markUpImages
+    gallery.innerHTML += markUpImages
 }
 
 
