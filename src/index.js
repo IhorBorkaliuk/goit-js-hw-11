@@ -16,6 +16,7 @@ searchBtn.addEventListener('click', onSearch)
 
 function onSearch(evt) {
     evt.preventDefault();
+    clear()
     const inputSearch = input.value;
 
     if (inputSearch !== '') {
@@ -29,7 +30,7 @@ function onSearch(evt) {
         else {
         createImages(data.hits)
         Notiflix.Notify.success(
-          `Hooray! We found ${foundData.totalHits} images.`
+          `Hooray! We found ${data.totalHits} images.`
         );
         }
         })
@@ -44,19 +45,19 @@ function createImages(images) {
         return `
 <div class="photo-card">
 
-  <img src="image.${webformatURL}" alt="image.${tags}" loading="lazy" />
+  <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
-      <b>Likes: ${images.likes}</b>
+      <b>Likes: ${image.likes}</b>
     </p>
     <p class="info-item">
-      <b>Views: ${images.views}</b>
+      <b>Views: ${image.views}</b>
     </p>
     <p class="info-item">
-      <b>Comments: ${images.comments}</b>
+      <b>Comments: ${image.comments}</b>
     </p>
     <p class="info-item">
-      <b>Downloads: ${images.downloads}</b>
+      <b>Downloads: ${image.downloads}</b>
     </p>
   </div>
 </div>
