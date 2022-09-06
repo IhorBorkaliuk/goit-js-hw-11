@@ -1,4 +1,4 @@
-import axios from "axios"
+// import axios from "axios"
 
 export const fetchPictures = async (request, page) => {
     const API_KEY = '29728762-2a6b84e3d27132460ba58a3d0'
