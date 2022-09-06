@@ -2,6 +2,7 @@ import { fetchPictures } from "./js/fetchPictures";
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+// import InfiniteScroll from "infinite-scroll";
 
 
 const form = document.querySelector('#search-form')
@@ -10,6 +11,11 @@ const searchBtn = document.querySelector('[type="submit"]')
 const gallery = document.querySelector('.gallery')
 const loadMoreBtn = document.querySelector('.load-more')
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
+// let infScroll = new InfiniteScroll('gallery', {
+  // path: 'https://pixabay.com/api/?key=${API_KEY}&q=${request}&orientation=horizontal&safesearch=true&image_type=photo&per_page=40&page=${page}',
+  // append: false,
+  // domParseResponse: false,
+// })
 
 let page = 1
 
@@ -42,7 +48,7 @@ function onSearch(evt) {
       `Hooray! We found ${data.totalHits} images.`
     )
             loadMoreBtn.style.display = 'block'
-            gallerySimpleLightbox.refresh()
+                  gallerySimpleLightbox.refresh()
             }
     })
 }
