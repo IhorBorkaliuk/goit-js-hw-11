@@ -27,7 +27,7 @@ loadMoreBtn.addEventListener('click', onLoadMore)
 loadMoreBtn.style.display = 'none'
 
 function onSearch(evt) {
-    evt.preventDefault();
+  evt.preventDefault();
   clear()
     const inputSearch = input.value;
 
@@ -35,10 +35,9 @@ function onSearch(evt) {
         clear()
         return
     }
-
   fetchPictures(inputSearch, page)
     .then(data => {
-                if (data.hits.length === 0) {
+      if (data.hits.length === 0) {
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
                     );
@@ -58,21 +57,20 @@ function onSearch(evt) {
 function onLoadMore() {
   page += 1;
   const inputSearch = input.value;
-        fetchPictures(inputSearch, page)
-          .then(data => {
-    if (data.hits.length === 0) {
+    fetchPictures(inputSearch, page)
+      .then(data => {
+        const pagesCounter = Math.ceil(data.totalHits / 40)
+      createImages(data.hits)
+      Notiflix.Notify.success(
+      `Hooray! We found ${data.totalHits} images.`);
+        loadMoreBtn.style.display = 'block'
+        
+        if (page >= pagesCounter) {
     Notiflix.Notify.failure(
       'We`re sorry, but you`ve reached the end of search results.'
       );
         loadMoreBtn.style.display = 'none'
     }
-    else {
-    createImages(data.hits)
-                  Notiflix.Notify.success(
-      `Hooray! We found ${data.totalHits} images.`
-                    );
-    loadMoreBtn.style.display = 'block'
-          }
         })  
 } 
 
