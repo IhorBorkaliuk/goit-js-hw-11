@@ -24,8 +24,6 @@ let page = 1
 searchBtn.addEventListener('click', onSearch)
 loadMoreBtn.addEventListener('click', onLoadMore)
 
-loadMoreBtn.style.display = 'none'
-
 function onSearch(evt) {
   evt.preventDefault();
   clear()
@@ -34,7 +32,7 @@ function onSearch(evt) {
     if (!inputSearch) {
         clear()
         return
-    }
+  }
   fetchPictures(inputSearch, page)
     .then(data => {
       if (data.hits.length === 0) {
@@ -57,6 +55,7 @@ function onSearch(evt) {
 function onLoadMore() {
   page += 1;
   const inputSearch = input.value;
+  loadMoreBtn.style.display = 'none'
     fetchPictures(inputSearch, page)
       .then(data => {
         const pagesCounter = Math.ceil(data.totalHits / 40)
